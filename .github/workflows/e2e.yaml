@@ -8,6 +8,15 @@ on:
     tags-ignore: [ '*' ]
 
 jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Setup tools
+        uses: ./.github/actions/tools
+      - name: Validate manifests
+        run: ./scripts/validate.sh
   dev:
     runs-on: ubuntu-latest
     steps:
