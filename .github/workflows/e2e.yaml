@@ -31,3 +31,25 @@ jobs:
           kubectl -n flux-system logs deploy/kustomize-controller
           kubectl -n flux-system logs deploy/helm-controller
           flux get all --all-namespaces
+  staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Setup e2e
+        uses: ./.github/actions/e2e
+        with:
+          clusterPath: ./clusters/staging
+      - name: Verify cluster reconciliation
+        run: |
+          kubectl -n flux-system wait kustomization/infrastructure --for=condition=ready --timeout=5m
+          kubectl -n flux-system wait kustomization/apps --for=condition=ready --timeout=5m
+          kubectl -n v2 wait deploy/podinfo --for=condition=available --timeout=5m
+      - name: Debug failure
+        if: failure()
+        run: |
+          kubectl -n flux-system get all
+          kubectl -n flux-system logs deploy/source-controller
+          kubectl -n flux-system logs deploy/kustomize-controller
+          kubectl -n flux-system logs deploy/helm-controller
+          flux get all --all-namespaces
