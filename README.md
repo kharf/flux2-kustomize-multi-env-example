@@ -2,7 +2,7 @@
 
 [![e2e](https://github.com/kharf/fluxv2-pg/actions/workflows/e2e.yaml/badge.svg)](https://github.com/kharf/fluxv2-pg/actions/workflows/e2e.yaml)
 
-This example uses Flux and Kustomize to minimize duplicated configurations for a multi environment scenario.
+This example uses Flux and Kustomize for a multi environment scenario with a minimized configuration duplication.
 
 ## Testing
 
