@@ -7,8 +7,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup tools
-      uses: ./.github/actions/tools
     - name: Setup Flux
       uses: fluxcd/flux2/action@main
     - name: Setup Kubernetes
@@ -23,7 +21,7 @@ runs:
       run: |
         flux create source git flux-system \
         --url=${{ github.event.repository.html_url }} \
-        --branch=${GITHUB_REF#refs/heads/}
+        --branch=${{github.event.pull_request.head.ref}}
         flux create kustomization flux-system \
         --source=flux-system \
         --path=${{ inputs.clusterPath }}
